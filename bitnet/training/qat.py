@@ -6,15 +6,15 @@ class QATrainer:
     def __init__(self, engine):
         self.engine = engine
 
-    def loss(self, pred, target):
-        return float(np.mean((np.asarray(pred) - np.asarray(target)) ** 2))
+    def loss(self, a, b):
+        return float(np.mean((np.array(a) - np.array(b))**2))
 
-    def train_step(self, lr=0.0008):
-        total = 0.0
+    def step(self, lr=0.0006):
+        loss = 0.0
         for i in range(len(self.engine.weights)):
-            w = self.engine.weights[i].astype(np.float32)
-            grad = np.random.randn(*w.shape).astype(np.float32) * 0.015
-            w = np.clip(w - lr * grad, -2, 2)
-            self.engine.weights[i] = np.round(w).astype(np.int8)
-            total += self.loss(w, self.engine.weights[i])
-        return total / len(self.engine.weights)
+            w = self.engine.weights[i].astype("float32")
+            g = np.random.randn(*w.shape).astype("float32") * 0.012
+            w = np.clip(w - lr * g, -2.5, 2.5)
+            self.engine.weights[i] = np.round(w).astype("int8")
+            loss += self.loss(w, self.engine.weights[i])
+        return loss / len(self.engine.weights)

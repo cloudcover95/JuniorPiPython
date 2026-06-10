@@ -5,12 +5,12 @@ import argparse
 from bitnet.inference.engine import BitNetEngine
 
 def main():
-    p = argparse.ArgumentParser()
-    p.add_argument("prompt", nargs="?", default="Hello")
-    p.add_argument("--tokens", type=int, default=64)
-    args = p.parse_args()
-    eng = BitNetEngine({"layer_sizes": [128, 256, 128]})
-    print(eng.generate(args.prompt, max_tokens=args.tokens))
+    parser = argparse.ArgumentParser(description="BitNet CLI")
+    parser.add_argument("prompt", nargs="?", default="Hello")
+    parser.add_argument("--max-tokens", type=int, default=64)
+    args = parser.parse_args()
+    engine = BitNetEngine({"layer_sizes": [128, 256, 128]})
+    print(engine.generate(args.prompt, max_tokens=args.max_tokens))
 
 if __name__ == "__main__":
     main()

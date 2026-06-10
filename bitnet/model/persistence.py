@@ -12,8 +12,7 @@ import numpy as np
 class BitNetPersistence:
     def save(self, engine, path):
         if HAS_SAFETENSORS and path.endswith(".safetensors"):
-            tensors = {f"layer_{i}": w.astype(np.float32) for i, w in enumerate(engine.weights)}
-            save_file(tensors, path)
+            save_file({f"w{i}": w.astype("float32") for i, w in enumerate(engine.weights)}, path)
         else:
             with open(path, "w") as f:
                 json.dump({"config": engine.config, "weights": [w.tolist() for w in engine.weights]}, f)
