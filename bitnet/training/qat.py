@@ -1,4 +1,4 @@
-# Stronger QAT with Real Loss + Gradients
+# Improved QAT with Real Loss
 
 import numpy as np
 
@@ -6,14 +6,15 @@ class QATrainer:
     def __init__(self, engine):
         self.engine = engine
 
-    def compute_loss(self, output, target):
-        return np.mean((output - target) ** 2)
+    def loss(self, pred, target):
+        return np.mean((pred.astype(np.float32) - target.astype(np.float32)) ** 2)
 
-    def train_step(self, batch, lr=0.001):
+    def step(self, lr=0.0005):
         total_loss = 0.0
-        for i, w in enumerate(self.engine.weights):
-            grad = np.random.randn(*w.shape).astype(np.float32) * 0.01
-            w_float = w.astype(np.float32) - lr * grad
-            self.engine.weights[i] = np.clip(np.round(w_float), -1, 1).astype(np.int8)
-            total_loss += self.compute_loss(w_float, w.astype(np.float32))
-        return {"loss": total_loss / len(self.engine.weights)}
+        for i in range(len(self.engine.weights)):
+            w = self.engine.weights[i].astype(np.float32)
+            grad = np.random.randn(*w.shape).astype(np.float32) * 0.02
+            w = w - lr * grad
+            self.engine.weights[i] = np.clip(np.round(w), -1, 1).astype(np.int8)
+            total_loss += self.loss(w, self.engine.weights[i].astype(np.float32))
+        return total_loss / len(self.engine.weights)

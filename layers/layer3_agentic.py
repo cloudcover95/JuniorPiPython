@@ -1,17 +1,18 @@
-# Layer 3 v2 - Better Agentic Planning
+# Layer 3 v3 - Improved Agentic Reasoning
 
 class Layer3Agentic:
     def __init__(self, layer2):
         self.layer2 = layer2
 
-    def plan(self, goal):
-        steps = self.layer2.generate_with_context(f"Break down goal: {goal}")
-        return steps
+    def reason(self, goal):
+        context = self.layer2.generate_with_context(f"Think step by step about: {goal}")
+        return context
 
-    def execute_plan(self, goal):
-        plan = self.plan(goal)
+    def multi_step_plan(self, goal, steps=4):
         results = []
-        for step in ["analyze", "gather", "act", "verify"]:
-            result = self.layer2.generate_with_context(f"{step}: {goal}")
-            results.append(result)
-        return {"goal": goal, "plan": plan, "results": results}
+        current = goal
+        for i in range(steps):
+            thought = self.reason(f"Step {i+1}: {current}")
+            results.append(thought)
+            current = thought
+        return results
