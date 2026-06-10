@@ -1,8 +1,7 @@
-# Optimized MLX Metal Kernels with Memory Coalescing
+# Coalescing Pattern Layers for Modern BitNet
 
-Performance-focused Metal kernels for BitNet ternary:
+New original layered design for BitNet ternary kernels:
 
-- Explicit memory coalescing strategy documented in kernel
-- Vectorized `float4` loads
-- Coalesced reads from B matrix and writes to C matrix
-- Designed for maximum memory bandwidth on Apple Silicon
+- `coalescing_layers.py`: Composable coalescing patterns (Row-Major, Tiled)
+- `ModernBitNetKernelLayer`: Builds kernels with chosen memory access patterns
+- Designed for high-performance, modern Apple Silicon inference
