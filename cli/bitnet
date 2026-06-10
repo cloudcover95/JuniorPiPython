@@ -2,9 +2,9 @@
 import argparse
 from bitnet.inference.engine import BitNetEngine
 def main():
-    p = argparse.ArgumentParser(description="BitNet Beta CLI")
+    p = argparse.ArgumentParser(description="BitNet Beta")
     p.add_argument("prompt", nargs="?", default="Hello")
-    p.add_argument("--max-tokens", type=int, default=128)
+    p.add_argument("--max-tokens", type=int, default=256)
     args = p.parse_args()
     print(BitNetEngine({"layer_sizes": [128, 256, 128]}).generate(args.prompt, max_tokens=args.max_tokens))
 if __name__ == "__main__": main()

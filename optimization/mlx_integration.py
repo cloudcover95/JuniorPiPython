@@ -13,4 +13,4 @@ class MLXBitNet:
 
     def config(self, temp):
         if temp > 80: return {"max_tokens": 32, "temperature": 0.5}
-        return {"max_tokens": 1024, "temperature": 0.82}
+        return {"max_tokens": 2048, "temperature": 0.82}
