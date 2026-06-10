@@ -1,8 +1,8 @@
-# MLX Custom Ops & Kernels
+# Optimized MLX Metal Kernels
 
-Exploration of advanced MLX custom operations for BitNet:
+Performance-optimized Metal kernels for BitNet ternary operations:
 
-- `mlx_custom_ops.py`: Custom `ternary_matmul_custom` with VJP (gradient support)
-- `mlx_metal_kernels.py`: Metal Shading Language kernel examples
-
-These enable high-performance, differentiable ternary operations on Apple Silicon.
+- Vectorized `float4` loads
+- On-the-fly ternary quantization inside kernel
+- Better thread indexing and memory access patterns
+- Designed for high throughput on Apple Silicon GPUs
