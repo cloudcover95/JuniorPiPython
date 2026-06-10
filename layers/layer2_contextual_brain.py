@@ -1,9 +1,9 @@
-# Layer 2 v8
+# Layer 2 v9 - Enterprise Grade Attention
 
 import numpy as np
 
 class ContextualBrainLayer:
-    def __init__(self, engine, max_context=8192):
+    def __init__(self, engine, max_context=16384):
         self.engine = engine
         self.memory = []
         self.max_context = max_context
@@ -17,7 +17,7 @@ class ContextualBrainLayer:
         if not self.memory:
             return query
         q = np.asarray(query).flatten()
-        recent = self.memory[-100:]
+        recent = self.memory[-128:]
         scores = [np.dot(q, np.asarray(m).flatten()[:len(q)]) for m in recent]
         scores = np.array(scores)
         weights = np.exp(scores - np.max(scores))
@@ -27,6 +27,6 @@ class ContextualBrainLayer:
             ctx += w * np.asarray(m).flatten()[:len(q)]
         return q + 0.4 * ctx
 
-    def generate_with_context(self, prompt, max_tokens=1024):
+    def generate_with_context(self, prompt, max_tokens=2048):
         enhanced = self._attention(prompt) if isinstance(prompt, np.ndarray) else prompt
         return self.engine.generate(enhanced, max_tokens=max_tokens)

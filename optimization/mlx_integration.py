@@ -1,4 +1,4 @@
-# MLX
+# MLX Enterprise
 
 try:
     import mlx.core as mx
@@ -12,5 +12,5 @@ class MLXBitNet:
         return [mx.array(w.astype("float32")) for w in weights]
 
     def config(self, temp):
-        if temp > 80: return {"max_tokens": 24, "temperature": 0.5}
-        return {"max_tokens": 256, "temperature": 0.8}
+        if temp > 82: return {"max_tokens": 32, "temperature": 0.5}
+        return {"max_tokens": 512, "temperature": 0.8}
