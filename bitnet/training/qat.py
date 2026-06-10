@@ -1,4 +1,4 @@
-# Enterprise QAT
+# QAT
 
 import numpy as np
 
@@ -13,7 +13,7 @@ class QATrainer:
         loss = 0.0
         for i in range(len(self.engine.weights)):
             w = self.engine.weights[i].astype("float32")
-            g = np.random.randn(*w.shape).astype("float32") * 0.008
+            g = np.random.randn(*w.shape).astype("float32") * 0.007
             w = np.clip(w - lr * g, -3, 3)
             self.engine.weights[i] = np.round(w).astype("int8")
             loss += self.loss(w, self.engine.weights[i])

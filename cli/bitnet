@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-# Enterprise BitNet CLI
 import argparse
 from bitnet.inference.engine import BitNetEngine
 def main():
-    p = argparse.ArgumentParser(description="BitNet Enterprise CLI (Beta)")
+    p = argparse.ArgumentParser(description="BitNet Beta CLI")
     p.add_argument("prompt", nargs="?", default="Hello")
     p.add_argument("--max-tokens", type=int, default=128)
     args = p.parse_args()

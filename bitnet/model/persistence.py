@@ -1,4 +1,4 @@
-# Enterprise Persistence
+# Persistence
 
 try:
     from safetensors.numpy import save_file, load_file
