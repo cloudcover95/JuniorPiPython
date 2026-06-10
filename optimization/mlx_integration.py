@@ -1,4 +1,4 @@
-# MLX for Apple Silicon
+# MLX Apple Silicon
 
 try:
     import mlx.core as mx
@@ -12,7 +12,7 @@ class MLXBitNet:
             return weights
         return [mx.array(w.astype("float32")) for w in weights]
 
-    def thermal_config(self, temp):
-        if temp > 80:
-            return {"max_tokens": 28, "temp": 0.55}
-        return {"max_tokens": 256, "temp": 0.82}
+    def config_for_temp(self, temp):
+        if temp > 82:
+            return {"max_tokens": 24, "temperature": 0.5}
+        return {"max_tokens": 256, "temperature": 0.8}
