@@ -1,8 +1,8 @@
-# Optimized MLX Metal Kernels
+# Optimized MLX Metal Kernels with Memory Coalescing
 
-Performance-optimized Metal kernels for BitNet ternary operations:
+Performance-focused Metal kernels for BitNet ternary:
 
+- Explicit memory coalescing strategy documented in kernel
 - Vectorized `float4` loads
-- On-the-fly ternary quantization inside kernel
-- Better thread indexing and memory access patterns
-- Designed for high throughput on Apple Silicon GPUs
+- Coalesced reads from B matrix and writes to C matrix
+- Designed for maximum memory bandwidth on Apple Silicon
