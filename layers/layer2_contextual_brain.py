@@ -1,44 +1,35 @@
-# Layer 2: Contextual Brain for BitNet Ternary (Mobile Silicon Optimized)
+# Layer 2: Contextual Brain v2 (Strengthened - Mobile Optimized)
 
 import numpy as np
 
 class ContextualBrainLayer:
-    """
-    Layer 2 - Contextual Brain
-    Sits on top of raw BitNet inference (Layer 1).
-    Provides memory, context, state tracking, and intelligent routing.
-    Optimized for mobile silicon (Apple Silicon, ARM edge).
-    """
-
-    def __init__(self, bitnet_engine):
+    def __init__(self, bitnet_engine, max_context=128):
         self.engine = bitnet_engine
-        self.context_memory = []          # Simple contextual memory
-        self.state = {"session_id": None, "hardware": "unknown"}
+        self.context_memory = []
+        self.max_context = max_context
+        self.state = {"hardware": "unknown", "attention_weights": None}
 
-    def set_hardware(self, hardware_profile):
-        self.state["hardware"] = hardware_profile
+    def set_hardware(self, profile):
+        self.state["hardware"] = profile
 
-    def add_context(self, context_item):
-        self.context_memory.append(context_item)
-        # Keep memory bounded for mobile efficiency
-        if len(self.context_memory) > 50:
+    def add_context(self, item):
+        self.context_memory.append(item)
+        if len(self.context_memory) > self.max_context:
             self.context_memory.pop(0)
 
-    def generate_with_context(self, prompt, max_tokens=64):
-        # Inject context into prompt (simplified)
-        contextual_prompt = prompt
-        if self.context_memory:
-            context_str = " | ".join([str(c) for c in self.context_memory[-5:]])
-            contextual_prompt = f"{context_str} || {prompt}"
+    def _attention_like(self, query):
+        # Simple attention-like mechanism over context
+        if not self.context_memory:
+            return query
+        scores = [np.dot(query, np.array(c).flatten()[:len(query)]) for c in self.context_memory[-10:]]
+        weights = np.exp(scores) / np.sum(np.exp(scores))
+        self.state["attention_weights"] = weights
+        # Weighted context summary
+        context_summary = sum(w * np.array(c).flatten()[:len(query)] for w, c in zip(weights, self.context_memory[-10:]))
+        return query + 0.3 * context_summary  # Residual-style attention
 
-        # Call into Layer 1 (BitNetEngine)
-        output = self.engine.generate(contextual_prompt, max_tokens=max_tokens)
+    def generate_with_context(self, prompt, max_tokens=64):
+        enhanced_prompt = self._attention_like(prompt) if isinstance(prompt, np.ndarray) else prompt
+        output = self.engine.generate(enhanced_prompt, max_tokens=max_tokens)
         self.add_context(output)
         return output
-
-    def get_brain_state(self):
-        return {
-            "context_length": len(self.context_memory),
-            "hardware": self.state["hardware"],
-            "session_active": self.state["session_id"] is not None
-        }
