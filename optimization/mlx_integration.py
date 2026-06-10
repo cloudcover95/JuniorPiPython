@@ -1,4 +1,4 @@
-# MLX Real Integration Path for Apple Silicon
+# MLX Integration for Apple Silicon
 
 try:
     import mlx.core as mx
@@ -6,13 +6,13 @@ try:
 except ImportError:
     HAS_MLX = False
 
-class AppleSiliconMLX:
-    def convert_weights_to_mlx(self, weights):
+class MLXBitNet:
+    def to_mlx(self, weights):
         if not HAS_MLX:
             return weights
-        return [mx.array(w) for w in weights]
+        return [mx.array(w.astype(np.float32)) for w in weights]
 
-    def thermal_aware_config(self, temp_celsius):
-        if temp_celsius > 80:
-            return {"max_tokens": 24, "temperature": 0.5}
-        return {"max_tokens": 128, "temperature": 0.8}
+    def get_thermal_config(self, temp):
+        if temp > 78:
+            return {"max_tokens": 32, "temperature": 0.6}
+        return {"max_tokens": 256, "temperature": 0.85}

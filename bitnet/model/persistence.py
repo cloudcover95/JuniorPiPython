@@ -1,4 +1,4 @@
-# Safetensors + Ternary Persistence
+# Safetensors Persistence
 
 try:
     from safetensors.numpy import save_file, load_file
@@ -12,17 +12,14 @@ import numpy as np
 class BitNetPersistence:
     def save(self, engine, path):
         if HAS_SAFETENSORS and path.endswith(".safetensors"):
-            tensors = {f"w_{i}": w.astype(np.float32) for i, w in enumerate(engine.weights)}
+            tensors = {f"layer_{i}": w.astype(np.float32) for i, w in enumerate(engine.weights)}
             save_file(tensors, path)
         else:
-            data = {"config": engine.config, "weights": [w.tolist() for w in engine.weights]}
             with open(path, "w") as f:
-                json.dump(data, f)
+                json.dump({"config": engine.config, "weights": [w.tolist() for w in engine.weights]}, f)
 
     def load(self, path):
         if HAS_SAFETENSORS and path.endswith(".safetensors"):
-            tensors = load_file(path)
-            return [np.array(tensors[k]) for k in sorted(tensors.keys())]
+            return load_file(path)
         with open(path) as f:
-            data = json.load(f)
-        return data
+            return json.load(f)
