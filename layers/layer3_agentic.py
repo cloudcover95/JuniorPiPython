@@ -1,12 +1,8 @@
-# Layer 3 v6 - Agentic Planning
+# Layer 3 v7
 
 class Layer3Agentic:
     def __init__(self, layer2):
         self.layer2 = layer2
 
     def plan(self, goal):
-        thoughts = []
-        for i in range(8):
-            t = self.layer2.generate_with_context(f"Step {i}: {goal}")
-            thoughts.append(t)
-        return thoughts
+        return [self.layer2.generate_with_context(f"Step {i}: {goal}") for i in range(8)]

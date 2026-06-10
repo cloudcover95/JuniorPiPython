@@ -1,4 +1,4 @@
-# MLX Apple Silicon
+# MLX
 
 try:
     import mlx.core as mx
@@ -8,11 +8,9 @@ except ImportError:
 
 class MLXBitNet:
     def convert(self, weights):
-        if not HAS_MLX:
-            return weights
+        if not HAS_MLX: return weights
         return [mx.array(w.astype("float32")) for w in weights]
 
-    def config_for_temp(self, temp):
-        if temp > 82:
-            return {"max_tokens": 24, "temperature": 0.5}
+    def config(self, temp):
+        if temp > 80: return {"max_tokens": 24, "temperature": 0.5}
         return {"max_tokens": 256, "temperature": 0.8}
