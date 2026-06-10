@@ -1,6 +1,8 @@
-# MLX Custom Kernels
+# MLX Custom Ops & Kernels
 
-This directory contains custom MLX kernels for BitNet ternary operations on Apple Silicon.
+Exploration of advanced MLX custom operations for BitNet:
 
-- `mlx_kernels.py`: Custom `ternary_matmul_mlx` using MLX custom_function
-- Designed for high-performance inference on M-series chips
+- `mlx_custom_ops.py`: Custom `ternary_matmul_custom` with VJP (gradient support)
+- `mlx_metal_kernels.py`: Metal Shading Language kernel examples
+
+These enable high-performance, differentiable ternary operations on Apple Silicon.
