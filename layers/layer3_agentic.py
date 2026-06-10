@@ -1,21 +1,17 @@
-# Layer 3: Higher Reasoning / Agentic Behavior (Stub)
+# Layer 3 v2 - Better Agentic Planning
 
-class Layer3AgenticReasoning:
-    def __init__(self, layer2_brain):
-        self.brain = layer2_brain
+class Layer3Agentic:
+    def __init__(self, layer2):
+        self.layer2 = layer2
 
-    def plan_and_execute(self, goal):
-        # High-level planning + tool use stub
-        plan = ["analyze_goal", "gather_context", "execute_steps", "verify"]
+    def plan(self, goal):
+        steps = self.layer2.generate_with_context(f"Break down goal: {goal}")
+        return steps
+
+    def execute_plan(self, goal):
+        plan = self.plan(goal)
         results = []
-        for step in plan:
-            context = self.brain.generate_with_context(f"Step: {step} for goal: {goal}")
-            results.append(context)
+        for step in ["analyze", "gather", "act", "verify"]:
+            result = self.layer2.generate_with_context(f"{step}: {goal}")
+            results.append(result)
         return {"goal": goal, "plan": plan, "results": results}
-
-    def agentic_loop(self, goal, max_steps=5):
-        for i in range(max_steps):
-            decision = self.plan_and_execute(goal)
-            if "complete" in str(decision):
-                break
-        return decision
